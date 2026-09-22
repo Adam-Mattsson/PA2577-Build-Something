@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Movie Storage</title>
+    <link rel='stylesheet' href='{{ url_for('static', filename='home.css') }}'>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/saved">Saved</a></li>
+        </ul>
+    </nav>
+    <h1>Movie Catalog</h1>
+    <form method='POST' action='/' id="search-form">
+        <input type='text' name='title' placeholder='Movie Title' required>
+        <button type='submit'>Search</button>
+    </form>
+    <form action="/" method="POST" id="submit-form">
+            {% for item in items %}
+                <div>
+                    <input type="checkbox" name="selected_movies" value="" id={{item.id}}>
+                    <label for={{item.id}}>{{ item.title }}</label>
+                </div>
+            {% endfor %}
+            <button type="submit">Add Selected Movies</button>
+    </form>
+</body>
+<script>
+    document.getElementById("submit-form").addEventListener("submit", async function(e) {
+        // Prevent moving from page
+        e.preventDefault();
+        // Get all selected movies
+        const selectedMovies = Array.from(document.querySelectorAll('input[name="selected_movies"]:checked'));
+        console.log(selectedMovies);
+
+        // Send movies to the meda-catalog API
+    });
+</script>
+</html>
