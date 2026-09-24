@@ -13,13 +13,19 @@ def searchMovie(title: str):
     json_data = json.loads(response_data)
     return json_data["description"]
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def home():
     searchResult = []
-    if(request.method == 'POST'):
-        title = request.form['title']
-        searchResult = searchMovie(title)
-    return render_template('home.html', items=searchResult)
+    if(request.method == 'GET'):
+        searchQuery = request.args.get('search')
+        if searchQuery:
+            searchResult = searchMovie(searchQuery)
+            # Relevant display attributes: {id, type, title, year, runtime, photo_url}
+            print(len(searchResult))
+    return render_template(
+        'home.html', 
+        items=searchResult, 
+        searchQuery=searchQuery if searchQuery else "")
 
 
 @app.route('/saved', methods=['GET', 'POST'])
