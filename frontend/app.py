@@ -1,17 +1,18 @@
 from flask import Flask, render_template, request
+import os
+import requests
 
 app = Flask(__name__)
 
-def searchMovie(title: str):
-    import http.client
-    import json
-    formatted_title = title.replace(" ", "+")
-    conn = http.client.HTTPSConnection("imdb.iamidiotareyoutoo.com")
-    conn.request("GET", f"/justwatch?q={formatted_title}&L=en_IN")
-    response = conn.getresponse()
-    response_data = response.read().decode()
-    json_data = json.loads(response_data)
-    return json_data["description"]
+MEDIA_CATALOG_SERVICE_URL = os.environ.get("MEDIA_CATALOG_SERVICE_URL")
+
+@app.route('/search', methods=['GET'])
+def searchMedia():
+    searchQuery = request.args.get('search')
+    print(searchQuery)
+    response = requests.get(f"{MEDIA_CATALOG_SERVICE_URL}/search", params={'search': searchQuery})
+    print(response)
+    return response.json()
 
 @app.route('/', methods=['GET'])
 def home():
@@ -19,9 +20,8 @@ def home():
     if(request.method == 'GET'):
         searchQuery = request.args.get('search')
         if searchQuery:
-            searchResult = searchMovie(searchQuery)
+            searchResult = searchMedia()
             # Relevant display attributes: {id, type, title, year, runtime, photo_url}
-            print(len(searchResult))
     return render_template(
         'home.html', 
         items=searchResult, 
