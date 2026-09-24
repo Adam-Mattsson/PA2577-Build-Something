@@ -5,7 +5,7 @@ listen:
 run: deploy
 	kubectl port-forward service/frontend-service 8080:80
 
-restart_images:
+restart_images: build
 	kubectl rollout restart deployment/frontend-deployment
 	kubectl rollout restart deployment/media-catalog-deployment
 
@@ -27,3 +27,9 @@ build_media_catalog: ./backend/media-catalog/app.py
 
 teardown:
 	kubectl delete -f ./k8s
+
+log_frontend:
+	kubectl logs deployment/frontend-deployment
+
+log_catalog:
+	kubectl logs deployment/media-catalog-deployment

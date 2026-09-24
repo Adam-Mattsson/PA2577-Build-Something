@@ -19,6 +19,19 @@ spec:
           image: media-catalog:latest
           ports:
             - containerPort: 5001
+          env:
+            - name: DB_HOST
+              value: media-db-service
+            - name: DB_NAME
+              value: media-db
+            - name: DB_USER
+              value: postgres
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: password
+
 ---
 apiVersion: v1
 kind: Service
