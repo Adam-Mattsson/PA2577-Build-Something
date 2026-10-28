@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-recommendation-deployment
+  labels:
+    app: service-recommendation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-recommendation
+  template:
+    metadata:
+      labels:
+        app: service-recommendation
+    spec:
+      containers:
+        - name: service-recommendation
+          image: service-recommendation:latest
+          ports:
+            - containerPort: 5002
+          env:
+            - name: MEDIA_CATALOG_SERVICE_URL
+              value: "http://media-catalog-service"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-recommendation
+spec:
+  selector:
+    app: service-recommendation
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5002

@@ -41,5 +41,17 @@
             deleteButton.closest('.media-option').remove();
         }
     });
+
+    async function load_recommendation(){
+    let r = await fetch("/recommendation", {method: 'GET'})
+    if(!r.ok){
+        console.log("Cannot load recommendation")
+        return;
+    }
+    let recommendation = await r.json();
+    console.log(recommendation)
+    }
+    load_recommendation()
+
 </script>
 </html>

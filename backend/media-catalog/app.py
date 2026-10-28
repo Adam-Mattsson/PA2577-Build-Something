@@ -22,11 +22,6 @@ def external_search_media():
     return json_data["description"]
 
 
-def searchCachedMovies(title: str):
-    """Searches for a movie in the db cache and returns the movie information if found."""
-    pass
-
-
 @app.route('/media/save', methods=['POST'])
 def saveMedia():
     """Saves a media item/s to the user's collection."""

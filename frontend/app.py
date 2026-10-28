@@ -6,6 +6,8 @@ import json
 app = Flask(__name__)
 
 MEDIA_CATALOG_SERVICE_URL = os.environ.get("MEDIA_CATALOG_SERVICE_URL")
+SERVICE_RECOMMENDATION_SERVICE_URL = os.environ.get(
+    "SERVICE_RECOMMENDATION_SERVICE_URL")
 
 
 @app.route('/search', methods=['GET'])
@@ -55,4 +57,10 @@ def saved():
 @app.route('/media/remove/<media_id>', methods=['DELETE'])
 def removeMedia(media_id):
     r = requests.delete(f"{MEDIA_CATALOG_SERVICE_URL}/media/remove/{media_id}")
+    return r.json(), r.status_code
+
+
+@app.route('/recommendation', methods=['GET'])
+def recommendation():
+    r = requests.get(f"{SERVICE_RECOMMENDATION_SERVICE_URL}")
     return r.json(), r.status_code

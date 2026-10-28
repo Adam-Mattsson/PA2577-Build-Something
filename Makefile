@@ -8,10 +8,11 @@ run: deploy
 restart_images: build
 	kubectl rollout restart deployment/frontend-deployment
 	kubectl rollout restart deployment/media-catalog-deployment
+	kubectl rollout restart deployment/service-recommendation-deployment
 
 deploy: build manifest
 
-build: build_frontend build_media_catalog
+build: build_frontend build_media_catalog build_service_recommendation
 
 manifest:
 	kubectl apply -f ./k8s
@@ -24,6 +25,9 @@ build_frontend: ./frontend/app.py
 
 build_media_catalog: ./backend/media-catalog/app.py
 	docker build -t media-catalog ./backend/media-catalog
+
+build_service_recommendation: ./backend/service-recommendation/app.py
+	docker build -t service-recommendation ./backend/service-recommendation
 
 teardown:
 	kubectl delete -f ./k8s
