@@ -1,7 +1,7 @@
 .media-option {
     display: flex;
     align-items: center;
-    justify-content: left;
+    justify-content: space-between;
     gap: 8px;
     cursor: pointer;
     border-radius: 4px;
@@ -10,6 +10,13 @@
     margin-bottom: 8px;
     background-color: lightgray;
     box-shadow: 1px 1px 0 1px rgba(211, 211, 211, 0.2);
+}
+
+.media-left-content {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
 }
 
 .media-option:hover {
@@ -31,4 +38,16 @@
     border-radius: 4px;
     user-select: none;
     -webkit-user-drag: none;
+}
+
+.media-delete {
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    text-align: center;
+    align-content: center;
+}
+
+.media-delete:hover {
+    cursor: pointer;
 }

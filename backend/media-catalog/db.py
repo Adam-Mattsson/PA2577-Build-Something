@@ -41,7 +41,7 @@ def save_media(media: dict):
     cursor = db.cursor()
     cursor.execute(
         """
-    INSERT INTO media (id, type, title, year, runtime, photo_url, offers) VALUES (%s, %s,%s, %s,%s, %s,%s) ON CONFLICT DO NOTHING
+    INSERT INTO media (id, type, title, year, runtime, photo_url, offers) VALUES (%s, %s,%s, %s,%s, %s, %s) ON CONFLICT DO NOTHING
     """, (media["id"], media["type"], media["title"], media["year"], media["runtime"], photo_url_text, offers_text)
     )
     db.commit()
@@ -54,6 +54,22 @@ def save_medias(medias: list[dict]):
     for media in medias:
         save_media(media)
     return {"message": "Sucessfully Saved Media"}, 200
+
+
+def remove_media(media_id: str) -> dict:
+    db = connect()
+    cursor = db.cursor()
+    cursor.execute("""
+    DELETE FROM media WHERE id=%s;
+    """, (media_id,))
+    rows_affected = cursor.rowcount
+    cursor.close()
+    db.commit()
+    db.close()
+    if rows_affected > 0:
+        return {"message": "Media removed from collection"}, 200
+    else:
+        return {"message": "Media not found"}, 404
 
 
 def get_stored():

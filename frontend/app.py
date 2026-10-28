@@ -48,6 +48,11 @@ def get_stored_media():
 @app.route('/stored', methods=['GET', 'POST'])
 def saved():
     saved = get_stored_media()
-    extracted_data = json.loads(saved['message'])
-    print(extracted_data)
-    return render_template('stored.html', items=extracted_data)
+    media_collection = saved['message']
+    return render_template('stored.html', items=media_collection)
+
+
+@app.route('/media/remove/<media_id>', methods=['DELETE'])
+def removeMedia(media_id):
+    r = requests.delete(f"{MEDIA_CATALOG_SERVICE_URL}/media/remove/{media_id}")
+    return r.json(), r.status_code

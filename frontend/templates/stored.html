@@ -16,14 +16,30 @@
     <div>
          {% for item in items %}
         <label class="media-option">
-            <img src="{{ item.photo_url[0] }}" alt="{{ item.title }} poster" class="media-poster">
-            <span class="media-info">
-                <span class="media-title">{{ item.title }}</span>
-                <span class="media-year">Year: {{ item.year }}</span>
-                <span class="media-type">Media: {{ item.type }}</span>
-            </span>
+            <div class="media-left-content">
+                <img src="{{ item.photo_url[0] }}" alt="{{ item.title }} poster" class="media-poster">
+                <span class="media-info">
+                    <span class="media-title">{{ item.title }}</span>
+                    <span class="media-year">Year: {{ item.year }}</span>
+                    <span class="media-type">Media: {{ item.type }}</span>
+                </span>
+            </div>
+            <div class="media-delete" data-id="{{item.id}}">X</div>
         </label>
         {% endfor %}
     </div>
 </body>
+<script>
+    // Check every time we click if we press the delete button remove the card and from the users collection
+    document.addEventListener("click", async (event)=>{
+        let deleteButton = event.target.closest('.media-delete');
+        if (!deleteButton) return; // If we pressed anything other than the delete button then we resume
+        event.preventDefault()
+        let response = await fetch(`/media/remove/${encodeURIComponent(deleteButton.dataset.id)}`, {method: 'DELETE'});
+        if(response.ok){
+            // Remove corresponding card
+            deleteButton.closest('.media-option').remove();
+        }
+    });
+</script>
 </html>

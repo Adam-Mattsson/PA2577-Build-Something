@@ -37,7 +37,15 @@ def saveMedia():
 
 @app.route('/stored', methods=['GET'])
 def saved():
-    """Saves a media item/s to the user's collection."""
+    """Retrieves users media collection"""
     media = db.get_stored()
-    print(media)
-    return {"message": json.dumps(media)}, 200
+    return {"message": media}, 200
+
+
+@app.route('/media/remove/<media_id>', methods=['DELETE'])
+def removeMedia(media_id: str):
+    """Remove stored media from user's collection"""
+    if not isinstance(media_id, str):
+        return {"message": "Not valid id"}, 400
+    r = db.remove_media(media_id)
+    return r
