@@ -16,7 +16,8 @@ html {
 .navbar div {
     border: 1px solid black;
     border-radius: 4px;
-    width: 48px;
+    width: fit-content;
+    padding: 2px;
 }
 
 .navbar div a {

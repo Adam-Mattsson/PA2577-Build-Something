@@ -4,15 +4,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' href='{{ url_for('static', filename='base.css') }}'>
     <link rel='stylesheet' href='{{ url_for('static', filename='stored.css') }}'>
-    <title>Saved Medias</title>
+    <title>Saved Collection</title>
 </head>
 <body>
     <nav class="navbar">
         <div><a href="/">Home</a></div>
-        <div><a href="/stored">Saved</a></div>
+        <div><a href="/stored">Collection</a></div>
     </nav>
     <h1>Saved Medias</h1>
-    <p>This is the saved media page. You can view your saved media here.</p>
+    <div class="recommendation-holder">
+        <p>Best streaming service coverage for your collection</p>
+        <div id="recommendation-list"></div>
+    </div>
+    <div class="spacer"></div>
     <div>
          {% for item in items %}
         <label class="media-option">
@@ -30,6 +34,8 @@
     </div>
 </body>
 <script>
+    let recommendation = [];
+    let recommendation_list = document.getElementById("recommendation-list");
     // Check every time we click if we press the delete button remove the card and from the users collection
     document.addEventListener("click", async (event)=>{
         let deleteButton = event.target.closest('.media-delete');
@@ -40,7 +46,9 @@
             // Remove corresponding card
             deleteButton.closest('.media-option').remove();
         }
+        recommendation = load_recommendation()
     });
+
 
     async function load_recommendation(){
     let r = await fetch("/recommendation", {method: 'GET'})
@@ -50,8 +58,38 @@
     }
     let recommendation = await r.json();
     console.log(recommendation)
-    }
-    load_recommendation()
 
+    // Update the recommendation-list HTML element
+    recommendation_list.replaceChildren(); // Remove old children
+    for (let i=0; i < recommendation.length; i++){
+        let service = recommendation[i];
+
+        let service_content = document.createElement("div"); // Holder for service information
+        let hidden_details = document.createElement("details"); // Dropdown / hidden info with the medias covered
+        let summary = document.createElement("summary");
+        summary.className = "streaming-summary"
+        summary.textContent = `${i+1}. ${service.service}: ${service.count}/${service.total} titles`;
+        let progress_bar = document.createElement("progress"); // Progress coverage
+        progress_bar.value = service.count;
+        progress_bar.max = service.total;
+
+        let media_list = document.createElement("ul");
+        for (let media of service.media){
+            let li = document.createElement("li");
+            let a = document.createElement("a");
+            a.href = media.url; // Url to the media on the service
+            a.target = "_blank" // Open link on new page
+            a.textContent = media.title; // Show only the title of the media as the href
+            li.appendChild(a);
+            media_list.appendChild(li);
+        }
+        summary.appendChild(progress_bar);
+        hidden_details.appendChild(summary);
+        hidden_details.appendChild(media_list);
+        service_content.appendChild(hidden_details);
+        recommendation_list.appendChild(service_content);
+    }
+    }
+    recommendation = load_recommendation()
 </script>
 </html>
