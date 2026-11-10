@@ -17,10 +17,7 @@ build: build_frontend build_media_catalog build_service_recommendation
 manifest:
 	kubectl apply -f ./k8s
 
-dev_frontend: ./frontend/app.py
-	flask --app ./frontend/app.py run --host=0.0.0.0 --port=5000 --debug
-
-build_frontend: ./frontend/app.py
+build_frontend:
 	docker build -t media-frontend ./frontend
 
 build_media_catalog: ./backend/media-catalog/app.py

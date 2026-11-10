@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Movie Collection</title>
+    <link rel='stylesheet' href='./home/home.css'>
+    <link rel='stylesheet' href='../base.css'>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div><a href="/">Home</a></div>
+        <div><a href="/collection">Collection</a></div>
+    </nav>
+    <h1>Movie Catalog</h1>
+    <form method='GET' action='/search' id="search-form">
+        <input type='text' name='query' placeholder='Movie Title' value='' required>
+        <button type='submit'>Search</button>
+    </form>
+    <div class="spacer"></div>
+    <form action="/media/save" method="POST" id="save" autoComplete="off">
+        <button type="submit">Add Selected Movies to collection</button>
+        <span id="save-status" role="status"></span>
+        <div class="spacer"></div>
+        <div id="media-selection-holder"></div>
+    </form>
+    <script type="module" src="/home/home.js"></script>
+</body>
+
+</html>

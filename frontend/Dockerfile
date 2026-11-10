@@ -1,15 +1,11 @@
-FROM python:3.14-slim
+FROM node:18-alpine
+EXPOSE 5000
+
+RUN npm install -g nodemon
 
 WORKDIR /app
+COPY . .
 
-ENV PYTHONUNBUFFERED=1
+RUN npm install
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY app.py .
-EXPOSE 5000
-COPY ./static ./static
-COPY ./templates ./templates
-
-CMD ["flask", "--app", "app.py", "run", "--host=0.0.0.0", "--port=5000"]
+ENTRYPOINT [ "npm", "run", "dev" ] 
