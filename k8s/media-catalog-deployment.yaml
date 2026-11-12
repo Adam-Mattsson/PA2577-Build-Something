@@ -31,6 +31,10 @@ spec:
                 secretKeyRef:
                   name: db-secret
                   key: password
+            - name: PORT
+              value: "5001"
+            - name: SEARCH_SERVICE_URL
+              value: "https://imdb.iamidiotareyoutoo.com"
 
 ---
 apiVersion: v1

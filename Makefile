@@ -1,9 +1,9 @@
 
 listen:
-	kubectl port-forward service/frontend-service 8080:80
+	kubectl port-forward service/frontend-service 5000:80
 
 run: deploy
-	kubectl port-forward service/frontend-service 8080:80
+	kubectl port-forward service/frontend-service 5000:80
 
 restart_images: build
 	kubectl rollout restart deployment/frontend-deployment
@@ -20,7 +20,7 @@ manifest:
 build_frontend:
 	docker build -t media-frontend ./frontend
 
-build_media_catalog: ./backend/media-catalog/app.py
+build_media_catalog: ./backend/media-catalog/src/index.js
 	docker build -t media-catalog ./backend/media-catalog
 
 build_service_recommendation: ./backend/service-recommendation/app.py

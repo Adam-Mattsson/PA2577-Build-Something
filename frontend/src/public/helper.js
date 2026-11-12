@@ -32,9 +32,13 @@ function createMediaElement(media) {
 	infoHolder.appendChild(year);
 	infoHolder.appendChild(type);
 
+	let leftItems = document.createElement('div');
+	leftItems.className = 'media-left-content';
+	leftItems.appendChild(poster);
+	leftItems.appendChild(infoHolder);
+
 	holder.appendChild(checkbox);
-	holder.appendChild(poster);
-	holder.appendChild(infoHolder);
+	holder.appendChild(leftItems);
 	return holder;
 }
 

@@ -31,8 +31,8 @@ app.get('/search', async (req, res) => {
 			message: `Could not fetch search results with query ${query}, error: ${r.message}`,
 		});
 	}
-	let { description } = await r.json();
-	return res.status(200).json(message);
+	let { message } = await r.json();
+	return res.status(200).json({ message: message });
 });
 
 app.get('/stored', async (req, res) => {
@@ -62,14 +62,14 @@ app.get('/recommendation', async (req, res) => {
 // --- POST ---
 
 app.post('/media/save', async (req, res) => {
-	const { media } = req.body;
+	const media = req.body;
 	if (!media) {
 		return res.status(400).json({ message: 'Missing media body' });
 	}
 	let r = await fetch(`${MEDIA_CATALOG_SERVICE_URL}/media/save`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ media: media }),
+		body: JSON.stringify(media),
 	});
 	if (!r.ok) {
 		return res.status(500).json({ message: 'Could not save media' });

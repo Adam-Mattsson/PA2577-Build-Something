@@ -9,6 +9,11 @@ function updateMediaCollection() {
 	MEDIA_COLLECTION.replaceChildren();
 	let mediaElements = createMediaElements(mediaCollection);
 	for (let i = 0; i < mediaElements.length; i++) {
+		// Remove the checkbox
+		let checkbox = mediaElements[i].querySelector('input[name=selected_media]');
+		mediaElements[i].removeChild(checkbox);
+		checkbox.remove();
+		// Add Remove X
 		let deleteDiv = document.createElement('div');
 		deleteDiv.className = 'media-delete';
 		deleteDiv.textContent = 'X';
@@ -27,7 +32,7 @@ async function getCollection() {
 		console.error('Could not fetch stored media');
 		return;
 	}
-	mediaCollection = await r.json();
+	mediaCollection = (await r.json())['message'];
 }
 
 async function getRecommendation() {

@@ -10,21 +10,21 @@ const SAVE_FORM = document.getElementById('save');
 function updateMediaSelection() {
 	MEDIA_SELECTION.replaceChildren();
 	let mediaElements = createMediaElements(queriedMedia);
-	MEDIA_SELECTION.append(mediaElements);
+	MEDIA_SELECTION.append(...mediaElements);
 }
 
 SAVE_FORM.addEventListener('submit', async function (e) {
-	SAVE_STATUS.textContent = 'Saving...';
 	// Prevent moving from page
 	e.preventDefault();
 	// Get all selected movies
+	if (!SAVE_FORM.elements.selected_media) return;
+	SAVE_STATUS.textContent = 'Saving...';
 	const selectedMediaIds = [...SAVE_FORM.elements.selected_media]
 		.filter((field) => field.checked)
 		.map((field) => field.id);
 	const selectedMedia = queriedMedia.filter((movie) =>
 		selectedMediaIds.includes(String(movie.id)),
 	);
-	console.log(selectedMedia);
 	const requestOptions = {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -37,7 +37,6 @@ SAVE_FORM.addEventListener('submit', async function (e) {
 		SAVE_STATUS.textContent = 'Count not save';
 	}
 	const result = await r.json();
-	console.log(result);
 	// Clear status information after 5 seconds
 	setTimeout(() => (SAVE_STATUS.textContent = ''), 5000);
 });
@@ -65,6 +64,6 @@ QUERY_FORM.addEventListener('submit', async function (e) {
 		return;
 	}
 	prevQuery = query;
-	queriedMedia = await r.json();
+	queriedMedia = (await r.json())['message'];
 	updateMediaSelection();
 });
