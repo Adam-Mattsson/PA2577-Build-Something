@@ -4,9 +4,10 @@ const { env } = require('process');
 
 const app = express();
 
-MEDIA_CATALOG_SERVICE_URL = env.MEDIA_CATALOG_SERVICE_URL;
-SERVICE_RECOMMENDATION_SERVICE_URL = env.SERVICE_RECOMMENDATION_SERVICE_URL;
-PORT = env.PORT;
+const MEDIA_CATALOG_SERVICE_URL = env.MEDIA_CATALOG_SERVICE_URL;
+const SERVICE_RECOMMENDATION_SERVICE_URL =
+	env.SERVICE_RECOMMENDATION_SERVICE_URL;
+const PORT = env.PORT;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -25,7 +26,17 @@ app.get('/search', async (req, res) => {
 	if (!query) {
 		return res.status(400).json({ message: 'Missing query' });
 	}
-	let r = await fetch(`${MEDIA_CATALOG_SERVICE_URL}/search?query=${query}`);
+	try {
+		var r = await fetch(`${MEDIA_CATALOG_SERVICE_URL}/search?query=${query}`);
+	} catch (error) {
+		console.error(
+			`Could not fetch search results with query ${query}, error: `,
+			error,
+		);
+		return res
+			.status(500)
+			.json({ message: `Could not fetch search results with query ${query}` });
+	}
 	if (!r.ok) {
 		return res.status(500).json({
 			message: `Could not fetch search results with query ${query}, error: ${r.message}`,
@@ -36,7 +47,12 @@ app.get('/search', async (req, res) => {
 });
 
 app.get('/stored', async (req, res) => {
-	let r = await fetch(`${MEDIA_CATALOG_SERVICE_URL}/stored`);
+	try {
+		var r = await fetch(`${MEDIA_CATALOG_SERVICE_URL}/stored`);
+	} catch (error) {
+		console.error('Could not fetch stored media, error: ', error);
+		return res.status(500).json('Could not fetch stored media');
+	}
 	if (!r.ok) {
 		return res.status(500).json('Could not fetch stored media');
 	}
@@ -48,7 +64,12 @@ app.get('/stored', async (req, res) => {
 });
 
 app.get('/recommendation', async (req, res) => {
-	let r = await fetch(`${SERVICE_RECOMMENDATION_SERVICE_URL}`);
+	try {
+		var r = await fetch(`${SERVICE_RECOMMENDATION_SERVICE_URL}`);
+	} catch (error) {
+		console.error('Could not fetch recommendation, error: ', error);
+		return res.status(500).json({ message: 'Could not fetch recommendation' });
+	}
 	if (!r.ok) {
 		return res.status(500).json({ message: 'Could not fetch recommendation' });
 	}
@@ -66,11 +87,16 @@ app.post('/media/save', async (req, res) => {
 	if (!media) {
 		return res.status(400).json({ message: 'Missing media body' });
 	}
-	let r = await fetch(`${MEDIA_CATALOG_SERVICE_URL}/media/save`, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(media),
-	});
+	try {
+		var r = await fetch(`${MEDIA_CATALOG_SERVICE_URL}/media/save`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(media),
+		});
+	} catch (error) {
+		console.error('Could not save media, error: ', error);
+		return res.status(500).json({ message: 'Could not save media' });
+	}
 	if (!r.ok) {
 		return res.status(500).json({ message: 'Could not save media' });
 	}
@@ -81,9 +107,22 @@ app.post('/media/save', async (req, res) => {
 
 app.delete('/media/remove/:media_id', async (req, res) => {
 	let media_id = req.params.media_id;
-	let r = await fetch(`${MEDIA_CATALOG_SERVICE_URL}/media/remove/${media_id}`, {
-		method: 'DELETE',
-	});
+	try {
+		var r = await fetch(
+			`${MEDIA_CATALOG_SERVICE_URL}/media/remove/${encodeURIComponent(media_id)}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	} catch (error) {
+		console.error(
+			`Could not remove media with id: ${media_id}, error: `,
+			error,
+		);
+		return res
+			.status(500)
+			.json({ message: `Could not remove media with id: ${media_id}` });
+	}
 	if (!r.ok) {
 		return res
 			.status(500)

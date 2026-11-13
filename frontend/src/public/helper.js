@@ -9,7 +9,7 @@ function createMediaElement(media) {
 	checkbox.id = media.id;
 
 	let poster = document.createElement('img');
-	poster.src = media.photo_url[0];
+	poster.src = media.photo_url[0] ?? ''; //Set to empty if there is not poster image available
 	poster.alt = media.title;
 	poster.className = 'media-poster';
 

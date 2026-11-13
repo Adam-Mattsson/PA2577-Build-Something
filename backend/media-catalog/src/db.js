@@ -27,14 +27,16 @@ class DB {
 			offers: JSON.stringify(m['offers']),
 			photo_url: JSON.stringify(m['photo_url']),
 		}));
-		formatted_media.forEach(async (m) => {
-			await this.pool.query(
-				`
+		await Promise.all(
+			formatted_media.map((m) => {
+				this.pool.query(
+					`
         INSERT INTO media (id, type, title, year, runtime, photo_url, offers) VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT DO NOTHING
         `,
-				[m.id, m.type, m.title, m.year, m.runtime, m.photo_url, m.offers],
-			);
-		});
+					[m.id, m.type, m.title, m.year, m.runtime, m.photo_url, m.offers],
+				);
+			}),
+		);
 	}
 	async remove(media_id) {
 		await this.pool.query(`DELETE FROM media WHERE id = $1`, [media_id]);

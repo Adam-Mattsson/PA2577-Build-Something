@@ -30,7 +30,14 @@ SAVE_FORM.addEventListener('submit', async function (e) {
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(selectedMedia),
 	};
-	const r = await fetch('/media/save', requestOptions);
+	try {
+		var r = await fetch('/media/save', requestOptions);
+	} catch (error) {
+		console.error('Could not save media');
+		SAVE_STATUS.textContent = 'Count not save';
+		setTimeout(() => (SAVE_STATUS.textContent = ''), 5000);
+		return;
+	}
 	if (r.ok) {
 		SAVE_STATUS.textContent = 'Saved to collection';
 	} else {
@@ -55,10 +62,15 @@ QUERY_FORM.addEventListener('submit', async function (e) {
 	const requestOptions = {
 		method: 'GET',
 	};
-	const r = await fetch(
-		`/search?query=${encodeURIComponent(query)}`,
-		requestOptions,
-	);
+	try {
+		var r = await fetch(
+			`/search?query=${encodeURIComponent(query)}`,
+			requestOptions,
+		);
+	} catch (error) {
+		console.error(`Could not seach for ${query}`);
+		return;
+	}
 	if (!r.ok) {
 		console.error('Could not search media');
 		return;

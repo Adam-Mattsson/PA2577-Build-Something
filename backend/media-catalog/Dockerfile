@@ -1,11 +1,11 @@
 FROM node:18-alpine
 EXPOSE 5001
 
-RUN npm install -g nodemon
+# RUN npm install -g nodemon
 
 WORKDIR /app
 COPY . .
 
 RUN npm install
 
-ENTRYPOINT [ "npm", "run", "dev" ] 
+ENTRYPOINT [ "npm", "run", "prod" ] 
