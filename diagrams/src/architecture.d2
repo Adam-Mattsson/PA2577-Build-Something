@@ -1,0 +1,96 @@
+direction: down
+
+User: {
+  shape: person
+  width: 100
+  height: 100
+}
+
+Internal: {
+  Frontend: {
+    label: ""
+    grid-rows: 2
+
+    Data: |md
+      # Service: Frontend
+    |
+
+    pages: {
+      label: ""
+      grid-columns: 2
+      style.fill: transparent
+      style.stroke-width: 0
+
+      frontend-home: |md
+        # Page: Home
+        ### Startpage (/)
+      |
+      frontend-collection: |md
+        # Page: Collection
+        ### /collection
+      |
+      frontend-home.shape: rectangle
+      frontend-collection.shape: rectangle
+    }
+  }
+  Frontend.shape: rectangle
+
+  media-catalog: |md
+    # Service: Media Catalog
+    ### Endpoints:
+    
+    `/search` - Uses user query to search media from API endpoint
+
+    `/media/save` - Saves user selected media to Postgres database
+
+    `/stored` - Fetches user media collection from Postgres database
+
+    `/media/remove/:media_id` - Deletes media from stored media collection
+    
+  |
+  media-catalog.shape: rectangle
+
+  service-recommendation: |md
+     # Service: Service Recommendation
+     ### Endpoints:
+     
+    `/` - Calculate service recommendation for stored media
+  |
+  service-recommendation.shape: rectangle
+
+  Database: {
+    Media: {
+      shape: sql_table
+      id: INTEGER {constraint: [primary_key]}
+      type: TEXT
+      title: TEXT
+      year: INTEGER
+      runtime: INTEGER
+      photo_url: JSONB
+      offers: JSONB
+    }
+  }
+  Database.shape: rectangle
+
+  Frontend -> media-catalog: |md
+    GET /search
+
+    GET /media/save
+
+    GET /stored
+    
+    GET /media/remove/:media_id
+  |
+  Frontend -> service-recommendation: GET /
+  service-recommendation -> media-catalog: GET /stored
+  media-catalog -> Database: CRUD Operations
+}
+
+External: {
+  near: center-right
+  Media-API
+}
+
+Internal.media-catalog -> External.Media-API: GET media
+
+User -> Internal.Frontend
