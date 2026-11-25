@@ -1,0 +1,15 @@
+.media-option input[type='checkbox'] {
+	position: absolute;
+	opacity: 100%;
+	width: 1px;
+	height: 1px;
+}
+
+.media-option:hover {
+	background-color: #e0e0e0;
+	cursor: pointer;
+}
+
+.media-option:has(input[type='checkbox']:checked) {
+	background-color: lightblue;
+}

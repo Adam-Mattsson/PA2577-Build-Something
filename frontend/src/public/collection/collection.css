@@ -1,0 +1,30 @@
+.media-delete {
+	width: 32px;
+	height: 32px;
+	justify-content: center;
+	text-align: center;
+	align-content: center;
+}
+
+.media-delete:hover {
+	cursor: pointer;
+}
+
+.recommendation-holder {
+	-webkit-user-drag: none;
+	user-select: none;
+	padding: 4px;
+	border: 1px solid black;
+	border-radius: 4px;
+}
+
+.streaming-summary {
+	-webkit-user-drag: none;
+	user-select: none;
+	display: flex;
+	flex-direction: column;
+}
+
+.streaming-summary:hover {
+	cursor: pointer;
+}

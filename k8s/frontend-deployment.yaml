@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: media-frontend
-          image: media-frontend:latest
+          image: adammattsson/media-frontend:latest
           ports:
             - containerPort: 5000
           env:
@@ -24,6 +24,8 @@ spec:
               value: "http://media-catalog-service"
             - name: SERVICE_RECOMMENDATION_SERVICE_URL
               value: "http://service-recommendation"
+            - name: PORT
+              value: "5000"
 ---
 apiVersion: v1
 kind: Service
