@@ -38,7 +38,7 @@ Internal: {
   media-catalog: |md
     # Service: Media Catalog
     ### Endpoints:
-    
+
     `/search` - Uses user query to search media from API endpoint
 
     `/media/save` - Saves user selected media to Postgres database
@@ -46,7 +46,7 @@ Internal: {
     `/stored` - Fetches user media collection from Postgres database
 
     `/media/remove/:media_id` - Deletes media from stored media collection
-    
+
   |
   media-catalog.shape: rectangle
 
@@ -78,7 +78,7 @@ Internal: {
     GET /media/save
 
     GET /stored
-    
+
     GET /media/remove/:media_id
   |
   Frontend -> service-recommendation: GET /
@@ -93,4 +93,4 @@ External: {
 
 Internal.media-catalog -> External.Media-API: GET media
 
-User -> Internal.Frontend
+User -> Internal.Frontend: Port forwarded 5000
