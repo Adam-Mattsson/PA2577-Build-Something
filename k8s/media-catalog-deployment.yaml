@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: media-catalog
-          image: media-catalog:latest
+          image: adammattsson/media-catalog:latest
           ports:
             - containerPort: 5001
           env:

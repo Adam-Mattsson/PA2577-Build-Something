@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: media-frontend
-          image: media-frontend:latest
+          image: adammattsson/media-frontend:latest
           ports:
             - containerPort: 5000
           env:

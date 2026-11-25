@@ -73,7 +73,7 @@ app.get('/recommendation', async (req, res) => {
 	if (!r.ok) {
 		return res.status(500).json({ message: 'Could not fetch recommendation' });
 	}
-	let recommendation = await r.json();
+	let recommendation = (await r.json())['message'];
 	if (!recommendation) {
 		return res.status(500).json({ message: 'Could not fetch recommendation' });
 	}
