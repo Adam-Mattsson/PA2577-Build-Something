@@ -1,4 +1,4 @@
-direction: down
+direction: right
 
 User: {
   shape: person
@@ -7,6 +7,10 @@ User: {
 }
 
 Internal: {
+  grid-columns: 2
+  grid-rows: 2
+  grid-gap: 256
+  label.near: top-left
   Frontend: {
     label: ""
     grid-rows: 2
@@ -87,7 +91,6 @@ Internal: {
 }
 
 External: {
-  near: center-right
   Media-API
 }
 
