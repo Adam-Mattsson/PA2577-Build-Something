@@ -2,13 +2,15 @@
 listen:
 	kubectl port-forward service/frontend-service 5000:80
 
-run: manifest listen
+wait:
+	kubectl rollout status deployment/frontend-deployment
+
+run: manifest wait listen
 
 restart_images:
 	kubectl rollout restart deployment/frontend-deployment
 	kubectl rollout restart deployment/media-catalog-deployment
 	kubectl rollout restart deployment/service-recommendation-deployment
-
 
 manifest:
 	kubectl apply -f ./k8s
